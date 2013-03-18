@@ -27,6 +27,18 @@ msgstr ""
 # ######################################################################
 # Custom strings
 
+msgid "and is also present on"
+msgstr "und ist auch bei"
+
+msgid "Licensing terms"
+msgstr "Lizenzbestimmungen"
+
+msgid "This web application is published on"
+msgstr "Das vorliegende Angebot ist veröffentlicht bei"
+
+msgid "under the"
+msgstr "unter der freien"
+
 msgid "Datasets with tag"
 msgstr "Datensätze mit diesem Tag"
 
