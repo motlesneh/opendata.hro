@@ -1,0 +1,28 @@
+[
+  {
+    "domain_content": false,
+    "domain_data": true,
+    "domain_software": false,
+    "family": "",
+    "id": "odc-by",
+    "is_okd_compliant": true,
+    "is_osi_compliant": false,
+    "maintainer": "",
+    "status": "active",
+    "title": "Open Data Commons Attribution License",
+    "url": "http://opendatacommons.org/licenses/by/1.0/"
+  }, 
+  {
+    "domain_content": true, 
+    "domain_data": false, 
+    "domain_software": false, 
+    "family": "", 
+    "id": "cc-by", 
+    "is_okd_compliant": true, 
+    "is_osi_compliant": false, 
+    "maintainer": "", 
+    "status": "active", 
+    "title": "Creative Commons Attribution License 3.0", 
+    "url": "http://creativecommons.org/licenses/by/3.0/"
+  }
+]

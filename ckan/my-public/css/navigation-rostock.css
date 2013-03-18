@@ -1,0 +1,57 @@
+div#mainmenu ul {
+    float:left;
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+div#mainmenu li {
+    position:relative;
+    min-height:1px;
+    vertical-align:bottom;
+}
+
+div#mainmenu ul ul {
+    display:none;
+    position:absolute;
+    top:auto;
+    z-index:500;
+}
+div#mainmenu ul ul li {
+    line-height:20px;
+    background-color:rgba(225,225,225,0.7);
+    margin-left:20px;
+}
+div#mainmenu ul ul li a {
+    margin-left:3px;
+    margin-right:3px;
+}
+
+div#mainmenu li:hover {
+    z-index:100;
+    cursor:pointer;
+}
+
+div#mainmenu li:hover ul ul,
+div#mainmenu li li:hover ul ul,
+div#mainmenu li li li:hover ul ul,
+div#mainmenu li li li li:hover ul ul {
+    display:none;
+}
+
+div#mainmenu li:hover ul,
+div#mainmenu li li:hover ul,
+div#mainmenu li li li:hover ul,
+div#mainmenu li li li li:hover ul {
+    display:block;
+}
+
+div#mainmenu a {
+    display:block;
+    white-space:nowrap;
+}
+
+a.top_parent {
+    height:18px;
+    line-height:18px;
+}

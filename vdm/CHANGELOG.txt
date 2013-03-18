@@ -1,0 +1,86 @@
+HEAD
+====
+
+v0.10 2011-10-26
+================
+  * Support for SQLAlchemy 0.7
+  * Fix timestamps to be UTC.
+
+v0.9 2010-01-11
+===============
+ 
+  * Support for SQLAlchemy 0.6 and SQLite (in addition to PostgreSQL) (#901)
+  * Minor bugfixes (#898 #899 #900)
+  * Remove (long-deprecated) SQLObject code from source tree
+
+v0.8 2010-01-10
+===============
+  * Recalled 2010-01-11
+
+v0.7 2010-05-11
+===============
+
+  * Support for SQLALchemy v0.5 (ticket:81)
+  * Improved diff support: diff on object creation (ticket:267) and reorganised
+    diff interface to allow diffing of related domain objects
+  * Minor bugfixes (cset:984d053fc15a/vdm, cset:0a7d889c5c1a/vdm)
+
+v0.6 2010-01-25
+===============
+
+  * Support for non-integer primary keys
+  * Diffing revisioned/versioned objects via diff(to_revision, from_revision) method
+  * **BREAKING CHANGE**: revision id changed to UUID from integer
+    * For an example upgrade script for client systems see
+      http://knowledgeforge.net/ckan/hg/file/tip/ckan/migration/versions/008_update_vdm_ids.py
+  * **BREAKING CHANGE**: Convert State from object to an enumeration
+    * For an example upgrade script for client systems see
+      http://knowledgeforge.net/ckan/hg/file/d3a25bb4eb1b/ckan/migration/versions/015_remove_state_object.py
+  * Various minor bugfixes and improvements especially to `Repository`
+
+v0.5 2009-09-17
+===============
+
+(All for vdm.sqlalchemy)
+
+  * Support stateful dict-like collections (already support list-like ones)
+  * Identity-map for stateful lists which eliminates subtle problems when
+    adding "existing" objects to a stateful list (or moving them within the
+    list)
+
+v0.4 2009-04-10
+===============
+
+(All for vdm.sqlalchemy)
+
+  * New Repository object (tools.py) to encapsulate repo-wide operations
+  * Repo create/clean/init operations
+  * Purge revision functionality (r408)
+  * List all objects changed in a revision (r408)
+  * Put stateful system under proper test and fix several major bugs (r418) 
+
+v0.3 2008-10-31
+===============
+
+  * No substantial new features but lots of bugfixes
+  * Better compatability with SQLAlchemy v0.5
+  * Revision has several new convenience methods and utilizes State
+
+v0.2 2008-05-30 
+===============
+
+  * SQLAlchemy implementation of versioned domain model (major)
+  * Customized to sqlalchemy with major performance improvements
+  * Utilizes 'cache-head-on-continuity' model
+  * Partial Elixir implementation.
+  * Various (minor) bugfixes and improvments for SQLObject version
+  * Greatly improved documentation
+  * See announce: <http://blog.okfn.org/2008/05/30/versioned-domain-model-v02-with-support-for-sqlalchemy-released/>
+
+v0.1 2007-02
+============
+
+  * Fully functional SQLObject implementation of versioned domain model.
+  * Support for basic versioned objects
+  * Support for m2m
+  * Atomic commits and Revision object

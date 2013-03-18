@@ -1,0 +1,53 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:i18n="http://genshi.edgewall.org/i18n"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  py:strip=""
+  >
+
+  <py:def function="body_class">${h.literal('no-sidebar')}</py:def>
+ 
+  <py:def function="page_title">Welcome</py:def>
+
+  <div py:match="//div[@id='content']" class="front-page">
+
+    <div>
+      <h1 style="margin-bottom:5px" class="page_heading">Welcome to ${g.site_title}! <a style="color:#ffcd05" data-toggle="modal" href=".modal-beta-version-help">Beta version</a></h1>
+      <p style="text-align:justify;margin-bottom:20px">The municipality of Rostock collects and manages a multitude of data belonging to many different categories such as transport, environment and climate, infrastructure, and economy. These data have huge potential for innovations as long as they are published as open data so that everyone is free to copy, distribute and use the data, to produce works from the data, and to modify, transform and build upon the data, especially for commercial use. This web application serves as a central platform for publishing open data collected by the municipality of Rostock.
+      </p>
+   </div>
+    <div class="row">
+      <div class="span12">
+        <div class="action-box">
+          <div class="action-box-inner find clearfix">
+            <h1>Find data</h1>
+            <form action="${h.url_for(controller='package', action='search')}"  method="GET"> 
+              <input name="q" value="" class="search-field" placeholder="${_('Find datasets')}" /> 
+              <p><a href="${h.url_for(controller='package', action='search')}">Use Advanced Search</a></p>
+          </form>
+               <p>${g.site_title} contains <a href="${h.url_for(controller='package', action='search')}" style="font-size:1.3em">${c.package_count} datasets</a> that you can browse, learn about and download.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+   <ul style="margin-top: 25px;" class="thumbnails">
+      <py:for each="i, group_dict in enumerate(c.groups[:8])">
+        <li class="span3">
+          <div class="thumbnail" style="padding: 10px 4px 10px 4px;">
+	          <p align="center">
+                  <py:if test="len(group_dict['image_url']) != 0">
+                      <a href="${h.url_for(controller='group', action='read', id=group_dict['name'])}">
+                          <img src="${group_dict['image_url']}" height="50" alt="${group_dict['title']}" title="${group_dict['title']}" align="top" />
+                      </a>
+                  </py:if>
+              </p>
+              <div align="center">
+                <strong>${group_dict['packages']} datasets</strong>
+              </div>
+          </div>
+        </li>
+      </py:for>
+    </ul>
+  </div>
+  <xi:include href="layout.html" />
+</html>
+

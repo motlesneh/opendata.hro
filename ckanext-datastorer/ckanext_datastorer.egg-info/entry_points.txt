@@ -1,0 +1,10 @@
+
+    [paste.paster_command]
+    datastorer = ckanext.datastorer.commands:Datastorer
+
+    [ckan.plugins]
+    datastorer = ckanext.datastorer.plugin:DatastorerPlugin
+
+    [ckan.celery_task]
+    tasks = ckanext.datastorer.celery_import:task_imports
+	

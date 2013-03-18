@@ -1,0 +1,2 @@
+2012-10-25 14:52:28,244 INFO  [ckan.model] CKAN database version upgraded: 0 -> 59
+2012-10-25 14:52:28,300 INFO  [ckan.model] Database initialised

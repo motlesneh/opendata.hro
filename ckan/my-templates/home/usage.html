@@ -1,0 +1,95 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:i18n="http://genshi.edgewall.org/i18n"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  py:strip="">
+  
+  <py:def function="page_title">Usage</py:def>
+  <py:def function="body_class">${h.literal('no-sidebar')}</py:def>
+
+  <div py:match="content" class="justify">
+    <h1 class="page_heading">Usage</h1>
+    
+    <p>OpenData.HRO not only comes with an intuitive user interface but also with an extensive application programming interface (API). The API facilitates the use of all functionalities provided by the open-source data cataloguing software CKAN which is at the basis of OpenData.HRO: searching for datasets, viewing the metadata (descriptive information) of a specific dataset, or filtering the contents of ressources and linking ressources.</p>
+    <p>As both input and output format, the API expects and uses <a href="http://de.wikipedia.org/wiki/JavaScript_Object_Notation" target="_blank">JSON</a>. Currently, the API provides three different versions that can be addressed by appending the numeric characters 1, 2 or 3 respectively to the URL of the API call: versions 2 or 3 are recommended and should be used. If no numeric character is appended to the URL, API version 1 is addressed automatically. The URL of calling API version 2 is <a href="${h.url_for(controller='api', action='get_api', id=None, ver=2)}" target="_blank">http://www.opendata-hro.de/api/2</a>.</p>
+    <p>A detailed description of the application programming interface can be found within the <a href="http://docs.ckan.org/en/ckan-1.8/api.html" target="_blank">documentation</a> of CKAN.</p>
+    
+    <h2>Searching for datasets and viewing metadata</h2>
+    <p><strong>Searching for datasets containing the search key <i>Bibliothek</i>:</strong> <a href="${h.url_for(controller='api', action='get_api', ver=2)}/search/dataset?q=Bibliothek" target="_blank">http://www.opendata-hro.de/api/2/search/dataset?q=Bibliothek</a></p>
+    <p>On calling the above URL, datasets are searched for containing the search key. The result, then, consists of all matching datasets. An explicit output of the above URL call could appear as follows:</p>
+    <pre class="prettyprint">
+{
+    "count": 1,
+    "results": 
+    [
+        "0bd49d5f-cd42-44a9-8938-75173fe07b17"
+    ]
+}</pre>
+    <p>One dataset with the ID 0bd49d5f-cd42-44a9-8938-75173fe07b17 was found. By means of the ID it is possible to view the metadata of the dataset: <a href="${h.url_for(controller='api', action='get_api', ver=2)}/rest/dataset/0bd49d5f-cd42-44a9-8938-75173fe07b17" target="_blank">http://www.opendata-hro.de/api/2/rest/dataset/0bd49d5f-cd42-44a9-8938-75173fe07b17</a></p>
+    <p>A (shortened) result, then, could appear as follows:</p>
+    <pre class="prettyprint">
+{
+    "license_title": "Open Data Commons Attribution License",
+    "id": "0bd49d5f-cd42-44a9-8938-75173fe07b17",
+    "license": "Open Data Commons Attribution License",
+    "license_url": "http://opendatacommons.org/licenses/by/1.0/",
+    [...]
+    "resources":
+    [
+        {
+            "id": "290cdf3c-33eb-44a8-963e-65a0ee140a45",
+            "size": "4610",
+            "last_modified": "2013-01-14T15:42:17",
+            "hash": "md5:76dfacfb68f229c1cdaa9b7493d97db5",
+            "format": "CSV",
+            "mimetype": "text/x-comma-separated-values",
+            "name": "Bibliotheken",
+            "url": "https://geo.sv.rostock.de/download/opendata/bibliotheken/bibliotheken.csv",
+            [...]
+        }
+        [...]
+    ],
+    "tags":
+    [
+        "Zentralbibliothek",
+        "Zweigstellenbibliothek"
+    ],
+    "groups":
+    [
+        "64260234-43cf-4879-be3d-d3021e2ab2ac",
+        "0801bc56-f5fc-4094-9446-c261af444955"
+    ],
+    "name": "bibliotheken",
+    "notes": "Dieser Datensatz umfasst die Standorte der Bibliotheken in Rostock mit Informationen zur Bezeichnung, zur Art, zur Adresse und zu Kontaktdaten. Die Ressourcen werden in der Regel im folgenden Zeitabstand aktualisiert: 365 Tage",
+    [...]
+}</pre>
+    <p>The output is very comprehensive and should be analysed in detail during the first queries. The most important information in the above (shortened) result is:
+        <ul>
+            <li>The dataset is published under the <a href="http://opendatacommons.org/category/odc-by/" target="_blank">Open Data Commons Attribution License</a>.</li>
+            <li>A ressource in CSV file format is available under <a href="https://geo.sv.rostock.de/download/opendata/bibliotheken/bibliotheken.csv" target="_blank">https://geo.sv.rostock.de/download/opendata/bibliotheken/bibliotheken.csv</a>. It was updated on January 14, 2013, and is 4610 bytes in size. What is very important in terms of a ressource is its hash value which can be used for proving the integrity of the file.</li>
+            <li>The tags (key words) assigned to this dataset are of interest particularly for searching purposes.</li>
+            <li>The dataset is allocated to categories 64260234-43cf-4879-be3d-d3021e2ab2ac and 0801bc56-f5fc-4094-9446-c261af444955. A list of all datasets or further information of a certain category can be viewed either by using the web interface or by calling the API: <a target="_blank" href="${h.url_for(controller='api', action='get_api', ver=2)}/rest/group/64260234-43cf-4879-be3d-d3021e2ab2ac">http://www.opendata-hro.de/api/2/rest/group/64260234-43cf-4879-be3d-d3021e2ab2ac</a>.</li>
+            <li>The dataset provides a description with additional details such as the update interval or information about the contents of the ressources.</li>
+        </ul>
+    </p>
+    
+    <h2>Filtering the contents of ressources and linking ressources</h2>
+    <p>Particularly when mobile devices are used or when only a low data transfer rate is available, it is advantageous to be able to download specific extracts of ressources (i.e. to filter ressources) and not having to download the complete ressources: The CKAN DataStore which is enabled for certain ressources provides the functionality of filtering. To check whether the DataStore is enabled for a certain ressource either the web interface can be used (via the site listing all the details of the ressource) or the API version 3 can be called by passing the correspondent ressource ID (e.g. the ID 290cdf3c-33eb-44a8-963e-65a0ee140a45): <a href="${h.url_for(controller='api', action='get_api', ver=3)}/action/datastore_search?resource_id=290cdf3c-33eb-44a8-963e-65a0ee140a45" target="_blank">http://www.opendata-hro.de/api/3/action/datastore_search?resource_id=290cdf3c-33eb-44a8-963e-65a0ee140a45</a>. The output will consist either of an error message (if the DataStore is not enabled) or of all the contents of the DataStore for this particular ressource.</p>
+    <p>If the DataStore is enabled for a certain ressource, either simple operations can be executed (with the already shown datastore_search function) or more complex operations such as SQL queries can be executed (with the datastore_search_sql function). When using SQL queries, all columns that shall be presented in the result must be explicitly indicated: otherwise errors may arise.</p>
+    <p>A simple example for linking two datasets by means of location and, at the same time, for filtering the contents based on location as well could appear as follows:</p>
+    <pre class="prettyprint">
+SELECT
+    bezeichnung,
+    strasse,
+    hnr,
+    hnr_zusatz
+FROM
+    "0c2c4996-afad-4ebe-9a3d-a3a7d7047a4d"
+WHERE
+    ST_Within(ST_Transform(geometrie,25833),ST_Buffer(ST_Transform((SELECT geometrie FROM "e614d725-4fad-4447-820d-4475ca55cff5" WHERE bezeichnung = 'Deutsche Med'),25833),300))</pre>
+    <p>This command can be executed via the API by calling the following URL:</p>
+    <p><a target="_blank" href="${h.url_for(controller='api', action='get_api', ver=3)}/action/datastore_search_sql?sql=SELECT%20bezeichnung,%20strasse,%20hnr,%20hnr_zusatz%20FROM%20%220c2c4996-afad-4ebe-9a3d-a3a7d7047a4d%22%20WHERE%20ST_Within(ST_Transform(geometrie,25833),ST_Buffer(ST_Transform((SELECT%20geometrie%20FROM%20%22e614d725-4fad-4447-820d-4475ca55cff5%22%20WHERE%20bezeichnung%20=%20%27Deutsche%20Med%27),25833),300))">http://www.opendata-hro.de/api/3/action/datastore_search_sql?sql=SELECT bezeichnung, strasse, hnr, hnr_zusatz FROM "0c2c4996-afad-4ebe-9a3d-a3a7d7047a4d" WHERE ST_Within(ST_Transform(geometrie,25833),ST_Buffer(ST_Transform((SELECT geometrie FROM "e614d725-4fad-4447-820d-4475ca55cff5" WHERE bezeichnung = 'Deutsche Med'),25833),300))</a></p>
+    <p>A detailed description of the DataStore API can be found within the <a href="http://docs.ckan.org/en/ckan-1.8/datastore-api.html" target="_blank">documentation</a> of CKAN.</p>
+  </div>
+
+  <xi:include href="layout.html" />
+</html>

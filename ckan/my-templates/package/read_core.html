@@ -1,0 +1,192 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:i18n="http://genshi.edgewall.org/i18n"
+  py:strip=""
+  >
+  <xi:include href="../_util.html" />
+  <xi:include href="../_snippet/license-share-help.html" />
+  <xi:include href="../_snippet/license-create-help.html" />
+  <xi:include href="../_snippet/license-adapt-help.html" />
+  <xi:include href="../_snippet/license-attribute-help.html" />
+
+  <div id="dataset" class="dataset">
+    <!-- Overview Section -->
+    <div id="dataset-overview">
+
+      <!-- Description -->
+      <div class="notes" py:if="str(c.pkg_notes_formatted).strip()">
+        <div id="notes-extract">
+          ${c.pkg_notes_formatted}
+        </div>
+        <div id="notes-remainder"></div>
+        <div id="notes-toggle" style="display: none;">
+          <button class="more btn"><img src="/images/chevron-down.png"/></button>
+          <button class="less btn" style="display: none;"><img src="/images/chevron-up.png"/></button>
+        </div>
+      </div>
+
+     <div py:if="c.pkg.license_id" id="dataset-license" class="subsection">
+      <h3>License</h3>
+      <p>
+         <py:if test="c.pkg_dict.get('license_id') == 'odc-by' or c.pkg_dict.get('license_id') == 'cc-by'">
+           <div style="font-size:32px;color:#E1E1E1;margin-bottom:8px">
+                <a data-toggle="modal" href=".modal-license-share-help">
+                  <img src="/img/rechte-pflichten/share_yes.png" title="You are free to share." />
+                </a><a data-toggle="modal" href=".modal-license-create-help">
+                  <img src="/img/rechte-pflichten/create_yes.png" title="You are free to create." />
+                </a><a data-toggle="modal" href=".modal-license-adapt-help">
+                  <img src="/img/rechte-pflichten/adapt_yes.png" title="You are free to adapt." />
+                </a>|<a data-toggle="modal" href=".modal-license-attribute-help">
+                  <img src="/img/rechte-pflichten/attribute_yes.png" title="You have to attribute." />
+                </a>
+           </div>
+        </py:if>
+        <py:choose test="">
+          <span py:when="c.pkg_dict.get('license_url')"><a target="_blank"
+              href="${c.pkg_dict.get('license_url')}" rel="dc:rights">${c.pkg_dict.get('license_title')}</a></span>
+          <span py:when="c.pkg.license" property="dc:rights">${c.pkg_dict.get('license_title')}</span>
+        </py:choose>
+
+<!--
+        <py:if test="c.pkg_dict.get('isopen')">
+            <a href="http://opendefinition.org/okd/" title="This dataset satisfies the Open Definition." target="_blank">
+              <img class="open-data" src="/img/opendata.png" height="15" alt="[Open Data]" />
+            </a>
+        </py:if>
+        <py:if test="not c.pkg_dict.get('isopen')">
+            <span class="closed">
+              ${h.icon('lock')}
+            </span>
+        </py:if>
+-->
+     </p>
+    </div>
+
+    <!-- Resources -->
+      <div id="dataset-resources" class="resources subsection">
+        <h3>Resources
+        <py:if test="h.check_access('package_update',{'id':c.pkg.id})"> &nbsp;
+          ${h.subnav_link(_('(edit)'), controller='package', action='editresources', id=c.pkg.name)}
+        </py:if></h3>
+        <ul class="resource-list">
+          <py:for each="res in c.pkg_dict.get('resources', [])">
+          <li>
+            <a href="${h.url_for(controller='package', action='resource_read', id=c.pkg_dict['name'], resource_id=res['id'])}">
+              ${h.resource_icon(res)}
+              ${h.resource_display_name(res)}
+              <span py:if="res.get('format')" class="format-box" property="dc:format">${res.get('format')}</span>
+            </a>
+            </li>
+          </py:for>
+        </ul>
+        <py:if test="not len(c.pkg_dict.get('resources', []))">
+          (none)
+        </py:if>
+      </div>
+
+    </div>
+
+    <!-- Dataset Information Section -->
+    <div id="dataset-information">
+    <h3>Additional Information
+      <py:if test="h.check_access('package_update',{'id':c.pkg.id})"> &nbsp;
+        ${h.subnav_link(_('(settings)'), controller='package', action='edit', id=c.pkg.name)}
+      </py:if></h3>
+    
+    <table class="table table-bordered table-striped">
+      <tbody>
+        <tr>
+          <td class="dataset-label">Maintainer</td>
+          <td class="dataset-details" property="dc:contributor">${c.pkg_maintainer_link}</td>
+        </tr>
+        <tr>
+          <td class="dataset-label">Author</td>
+          <td class="dataset-details" property="dc:creator">${c.pkg_author_link}</td>
+        </tr>
+        <tr>
+            <py:for each="i, (key, value) in enumerate(c.pkg_extras)">
+              <py:if test="key == 'sector'">
+                <td class="dataset-label">Sector</td>
+                <td class="dataset-details" property="rdf:value"><script>document.write(sectoranzeige("${value}"))</script><noscript>${value}</noscript></td>
+              </py:if>
+              <py:if test="key != 'sector'">
+              </py:if>
+          </py:for>
+        </tr>
+        <tr>
+            <py:for each="i, (key, value) in enumerate(c.pkg_extras)">
+              <py:if test="key == 'date_released'">
+                <td class="dataset-label">Date released</td>
+                <td class="dataset-details" property="rdf:value"><script>document.write(datumsanzeige("${value}"))</script><noscript>${value}</noscript></td>
+              </py:if>
+              <py:if test="key != 'date_released'">
+              </py:if>
+          </py:for>
+        </tr>
+        <tr>
+            <py:for each="i, (key, value) in enumerate(c.pkg_extras)">
+              <py:if test="key == 'date_updated'">
+                <td class="dataset-label">Date updated</td>
+                <td class="dataset-details" property="rdf:value"><script>document.write(datumsanzeige("${value}"))</script><noscript>${value}</noscript></td>
+              </py:if>
+              <py:if test="key != 'date_updated'">
+              </py:if>
+          </py:for>
+        </tr>
+        <tr>
+            <py:for each="i, (key, value) in enumerate(c.pkg_extras)">
+              <py:if test="key == 'spatial-text'">
+                <td class="dataset-label">Spatial coverage</td>
+                <td class="dataset-details" property="rdf:value">${value}</td>
+              </py:if>
+              <py:if test="key != 'spatial-text'">
+              </py:if>
+          </py:for>
+        </tr>
+        <tr>
+            <py:for each="i, (key, value) in enumerate(c.pkg_extras)">
+              <py:if test="key == 'temporal_coverage_from'">
+                <td class="dataset-label">Temporal coverage (from)</td>
+                <td class="dataset-details" property="rdf:value"><script>document.write(datumsanzeige("${value}"))</script><noscript>${value}</noscript></td>
+              </py:if>
+              <py:if test="key != 'temporal_coverage_from'">
+              </py:if>
+          </py:for>
+        </tr>
+        <tr>
+            <py:for each="i, (key, value) in enumerate(c.pkg_extras)">
+              <py:if test="key == 'temporal_coverage_to'">
+                <td class="dataset-label">Temporal coverage (to)</td>
+                <td class="dataset-details" property="rdf:value"><script>document.write(datumsanzeige("${value}"))</script><noscript>${value}</noscript></td>
+              </py:if>
+              <py:if test="key != 'temporal_coverage_to'">
+              </py:if>
+          </py:for>
+        </tr>
+        <tr>
+            <py:for each="i, (key, value) in enumerate(c.pkg_extras)">
+              <py:if test="key == 'temporal_granularity'">
+                <td class="dataset-label">Temporal granularity</td>
+                <td class="dataset-details" property="rdf:value">
+                      <py:for each="i, (key, value) in enumerate(c.pkg_extras)">
+                          <py:if test="key == 'temporal_granularity_factor'">
+                            ${value}
+                          </py:if>
+                          <py:if test="key != 'temporal_granularity_factor'">
+                          </py:if>
+                      </py:for>
+                    <script>document.write(granularitaetsanzeige("${value}"))</script><noscript>${value}</noscript>
+                </td>
+              </py:if>
+              <py:if test="key != 'temporal_granularity'">
+              </py:if>
+          </py:for>
+        </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+  </div> <!-- /dataset -->
+
+</html>
